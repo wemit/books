@@ -9,8 +9,21 @@ permissions:
   contents: write
 
 jobs:
-  release:
-    runs-on: ubuntu-latest
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: macos-15-intel
+            flag: -m
+          - os: windows-2022
+            flag: -w
+          - os: ubuntu-latest
+            flag: -l
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        shell: bash
 
     steps:
       - uses: actions/checkout@v4
@@ -24,18 +37,35 @@ jobs:
           yarn set version 1.22.18
           yarn
 
-      - name: Build all platforms and publish release
+      - name: Build and publish release
         env:
           CSC_IDENTITY_AUTO_DISCOVERY: false
           GH_TOKEN: ${{ github.token }}
-        run: yarn build -mwl --publish always
+        run: yarn build ${{ matrix.flag }} --publish always
+
+      - name: Upload bundled artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist-${{ matrix.os }}
+          path: dist_electron/bundled/*
+          if-no-files-found: ignore
+
+  homebrew:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download macOS artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: dist-macos-15-intel
+          path: dist
 
       - name: Update Homebrew tap
         env:
           GH_TOKEN: ${{ secrets.HOMEBREW_TAP_TOKEN }}
         run: |
           VERSION="${GITHUB_REF_NAME#v}"
-          DMG=$(ls dist_electron/bundled/Books-v*-mac-x64.dmg 2>/dev/null | head -1)
+          DMG=$(ls dist/Books-v*-mac-x64.dmg 2>/dev/null | head -1)
           if [ -z "$DMG" ]; then
             echo "No macOS DMG found — skipping Homebrew update"
             exit 0
@@ -73,12 +103,22 @@ jobs:
             https://api.github.com/repos/wemit/homebrew-books/pulls \
             -d "{\"title\":\"books v${VERSION}\",\"head\":\"release-${VERSION}\",\"base\":\"main\",\"body\":\"Automated cask update for v${VERSION}.\"}"
 
+  scoop:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download Windows artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: dist-windows-2022
+          path: dist
+
       - name: Update Scoop bucket
         env:
           GH_TOKEN: ${{ secrets.SCOOP_BUCKET_TOKEN }}
         run: |
           VERSION="${GITHUB_REF_NAME#v}"
-          EXE=$(ls dist_electron/bundled/Books-v*-windows-x64.exe 2>/dev/null | head -1)
+          EXE=$(ls dist/Books-v*-windows-x64.exe 2>/dev/null | head -1)
           if [ -z "$EXE" ]; then
             echo "No Windows installer found — skipping Scoop update"
             exit 0
