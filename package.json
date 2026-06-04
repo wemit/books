@@ -1,10 +1,9 @@
 {
-  "name": "frappe-books",
+  "name": "books",
   "version": "0.37.0",
-  "description": "Simple book-keeping app for everyone",
+  "description": "Offline desktop accounting with Estonian compliance",
   "author": {
-    "name": "Frappe Technologies Pvt. Ltd.",
-    "email": "hello@frappe.io"
+    "name": "wemit"
   },
   "scripts": {
     "dev": "node build/scripts/dev.mjs",
@@ -28,6 +27,7 @@
     "codemirror": "^6.0.1",
     "core-js": "^3.19.0",
     "electron-store": "^8.0.1",
+    "fast-xml-parser": "^5.8.0",
     "feather-icons": "^4.28.0",
     "knex": "^2.4.0",
     "lodash": "^4.17.23",
@@ -91,9 +91,9 @@
     "singleQuote": true,
     "trailingComma": "es5"
   },
-  "homepage": "https://frappe.io/books",
+  "homepage": "https://github.com/wemit/books",
   "repository": {
-    "url": "https://github.com/frappe/books"
+    "url": "https://github.com/wemit/books"
   },
   "license": "AGPL-3.0-only"
 }

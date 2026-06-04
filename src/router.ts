@@ -15,6 +15,8 @@ import POS from 'src/pages/POS/POS.vue';
 import type { HistoryState } from 'vue-router';
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
 import { historyState } from './utils/refs';
+// CUSTOM: addon-contributed routes
+import { getAddonRoutes } from 'src/custom';
 
 const routes: RouteRecordRaw[] = [
   {
@@ -139,7 +141,11 @@ const routes: RouteRecordRaw[] = [
   },
 ];
 
-const router = createRouter({ routes, history: createWebHistory() });
+const router = createRouter({
+  // CUSTOM: append addon routes
+  routes: [...routes, ...getAddonRoutes()],
+  history: createWebHistory(),
+});
 
 router.afterEach(({ fullPath }) => {
   const state = history.state as HistoryState;

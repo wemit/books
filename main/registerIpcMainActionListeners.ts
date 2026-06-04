@@ -29,6 +29,8 @@ import {
 import { saveHtmlAsPdf } from './saveHtmlAsPdf';
 import { sendAPIRequest } from './api';
 import { initScheduler } from './initSheduler';
+// CUSTOM: addon-contributed IPC handlers
+import { registerMainAddonHandlers } from './addons';
 
 export default function registerIpcMainActionListeners(main: Main) {
   ipcMain.handle(IPC_ACTIONS.CHECK_DB_ACCESS, async (_, filePath: string) => {
@@ -303,4 +305,7 @@ export default function registerIpcMainActionListeners(main: Main) {
       return databaseManager.getSchemaMap();
     });
   });
+
+  // CUSTOM: register addon IPC handlers
+  registerMainAddonHandlers();
 }

@@ -15,12 +15,11 @@ const buildDirPath = path.join(root, 'dist_electron', 'build');
 const packageDirPath = path.join(root, 'dist_electron', 'bundled');
 
 const frappeBooksConfig = {
-  productName: 'Frappe Books',
-  appId: 'io.frappe.books',
+  productName: 'Books',
+  appId: 'com.wemit.books',
   artifactName: '${productName}-v${version}-${os}-${arch}.${ext}',
   asarUnpack: '**/*.node',
   extraResources: [
-    { from: 'log_creds.txt', to: '../creds/log_creds.txt' },
     { from: 'translations', to: '../translations' },
     { from: 'templates', to: '../templates' },
   ],
@@ -35,9 +34,9 @@ const frappeBooksConfig = {
     artifactName: '${productName}-v${version}-mac-${arch}.${ext}',
     category: 'public.app-category.finance',
     icon: 'build/icon.icns',
-    notarize: {
-      teamId: process.env.APPLE_TEAM_ID || '',
-    },
+    ...(process.env.APPLE_TEAM_ID
+      ? { notarize: { teamId: process.env.APPLE_TEAM_ID } }
+      : {}),
     hardenedRuntime: true,
     gatekeeperAssess: false,
     darkModeSupport: false,
@@ -46,7 +45,7 @@ const frappeBooksConfig = {
     publish: ['github'],
   },
   win: {
-    publisherName: 'Frappe Technologies Pvt. Ltd.',
+    publisherName: 'wemit',
     artifactName: '${productName}-v${version}-windows-${arch}.${ext}',
     signDlls: true,
     icon: 'build/icon.ico',

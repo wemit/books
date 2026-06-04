@@ -1,0 +1,154 @@
+{
+  "countryCode": "ee",
+  "name": "Estonia - Chart of Accounts",
+  "tree": {
+    "Application of Funds (Assets)": {
+      "Current Assets": {
+        "Cash and Bank": {
+          "1000 - Cash": {
+            "accountType": "Cash"
+          },
+          "1010 - LHV": {
+            "accountType": "Bank"
+          },
+          "accountType": "Bank",
+          "isGroup": true
+        },
+        "Receivables": {
+          "1200 - Trade Receivables": {
+            "accountType": "Receivable"
+          },
+          "1280 - Claims to Owner": {
+            "accountType": "Receivable"
+          },
+          "isGroup": true
+        },
+        "Tax Assets": {
+          "2311 - Input VAT": {
+            "accountType": "Tax"
+          },
+          "2314 - RC VAT Receivable": {
+            "accountType": "Tax"
+          },
+          "isGroup": true
+        }
+      },
+      "Fixed Assets": {
+        "1832 - Computers and Equipment": {
+          "accountType": "Fixed Asset"
+        },
+        "1833 - Accumulated Depreciation": {
+          "accountType": "Accumulated Depreciation"
+        }
+      },
+      "Temporary Accounts": {
+        "Temporary Opening": {
+          "accountType": "Temporary"
+        }
+      },
+      "rootType": "Asset"
+    },
+    "Expenses": {
+      "Operating Expenses": {
+        "4200 - Set-up Costs": {},
+        "4310 - Telephone and Internet": {},
+        "4320 - IT Services": {},
+        "4340 - Banking Services": {},
+        "4360 - State Fees": {},
+        "4370 - Consultations and Training": {},
+        "4385 - Accounting Services": {},
+        "4395 - Other Operating Expenses": {},
+        "4510 - Travel Expenses": {}
+      },
+      "Financial and Other Expenses": {
+        "4810 - Depreciation": {
+          "accountType": "Depreciation"
+        },
+        "4950 - Exchange Gain/Loss": {},
+        "6060 - Interest Expense": {},
+        "7000 - Income Tax": {}
+      },
+      "rootType": "Expense"
+    },
+    "Income": {
+      "Revenue": {
+        "3000 - Sales in Estonia 24%": {},
+        "3015 - Sales to EU 0%": {},
+        "3025 - Service Exports": {},
+        "3060 - VAT-Exempt Sales": {}
+      },
+      "Other Income": {
+        "3560 - Other Income": {},
+        "6050 - Interest Income": {},
+        "isGroup": true
+      },
+      "rootType": "Income"
+    },
+    "Source of Funds (Liabilities)": {
+      "Current Liabilities": {
+        "Trade Payables": {
+          "2110 - Trade Payables": {
+            "accountType": "Payable"
+          },
+          "isGroup": true
+        },
+        "Owner Loans": {
+          "2030 - Short-term Loan from Owner": {
+            "accountType": "Payable"
+          },
+          "isGroup": true
+        },
+        "Tax Liabilities": {
+          "2305 - EU Establishment Output VAT": {
+            "accountType": "Tax"
+          },
+          "2306 - EU Establishment Input VAT": {
+            "accountType": "Tax"
+          },
+          "2307 - EU Establishment VAT Payable": {
+            "accountType": "Tax"
+          },
+          "2308 - OSS Sales VAT": {
+            "accountType": "Tax"
+          },
+          "2309 - OSS VAT Payable": {
+            "accountType": "Tax"
+          },
+          "2310 - Output VAT": {
+            "accountType": "Tax"
+          },
+          "2314 - RC VAT Payable": {
+            "accountType": "Tax"
+          },
+          "2360 - Income Tax Payable": {
+            "accountType": "Tax"
+          },
+          "accountType": "Tax",
+          "isGroup": true
+        }
+      },
+      "Long-term Liabilities": {
+        "2820 - Long-term Loan from Owner": {
+          "accountType": "Payable"
+        },
+        "isGroup": true
+      },
+      "rootType": "Liability"
+    },
+    "Equity": {
+      "2910 - Issued Capital": {
+        "accountType": "Equity"
+      },
+      "2970 - Retained Earnings": {
+        "accountType": "Equity"
+      },
+      "2980 - Profit for the Year": {
+        "accountType": "Equity"
+      },
+      "Opening Balance Equity": {
+        "accountType": "Equity"
+      },
+      "rootType": "Equity"
+    }
+  }
+}

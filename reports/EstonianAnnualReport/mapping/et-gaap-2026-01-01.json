@@ -1,0 +1,80 @@
+{
+  "_about": "Account-name → et-gaap element rollup for Estonian micro-OÜ (RPS, role-201014 balance + role-301011 income). Account names match fixtures/verified/ee.json. Edit freely.",
+  "_taxonomy": "http://xbrl.eesti.ee/taxonomy/et-gaap_2026-01-01/",
+  "balanceSheet": {
+    "CurrentAssets": {
+      "accounts": [
+        "1010 - LHV",
+        "1000 - Cash",
+        "1200 - Trade Receivables",
+        "1280 - Claims to Owner"
+      ]
+    },
+    "NonCurrentAssets": {
+      "accounts": [
+        "1832 - Computers and Equipment",
+        "1833 - Accumulated Depreciation"
+      ]
+    },
+    "CurrentLiabilities": {
+      "accounts": [
+        "2110 - Trade Payables",
+        "2030 - Short-term Loan from Owner",
+        "2310 - Output VAT",
+        "2311 - Input VAT",
+        "2314 - RC VAT Payable",
+        "2314 - RC VAT Receivable",
+        "2360 - Income Tax Payable"
+      ]
+    },
+    "NonCurrentLiabilities": {
+      "accounts": ["2820 - Long-term Loan from Owner"]
+    },
+    "IssuedCapital": {
+      "accounts": ["2910 - Issued Capital"]
+    },
+    "RetainedEarnings": {
+      "accounts": ["2970 - Retained Earnings", "2980 - Profit for the Year"]
+    },
+    "UnpaidCapital": {
+      "accounts": []
+    }
+  },
+  "incomeStatement": {
+    "Revenue": {
+      "accounts": [
+        "3000 - Sales in Estonia 24%",
+        "3015 - Sales to EU 0%",
+        "3025 - Service Exports",
+        "3060 - VAT-Exempt Sales"
+      ]
+    },
+    "OtherIncome": {
+      "accounts": ["3560 - Other Income", "6050 - Interest Income"]
+    },
+    "OtherOperatingExpense": {
+      "accounts": [
+        "4200 - Set-up Costs",
+        "4310 - Telephone and Internet",
+        "4320 - IT Services",
+        "4340 - Banking Services",
+        "4360 - State Fees",
+        "4370 - Consultations and Training",
+        "4385 - Accounting Services",
+        "4395 - Other Operating Expenses",
+        "4510 - Travel Expenses",
+        "4950 - Exchange Gain/Loss",
+        "6060 - Interest Expense"
+      ]
+    },
+    "EmployeeExpense": {
+      "accounts": []
+    },
+    "DepreciationAndImpairmentLossReversal": {
+      "accounts": ["4810 - Depreciation"]
+    },
+    "IncomeTaxExpense": {
+      "accounts": ["7000 - Income Tax"]
+    }
+  }
+}

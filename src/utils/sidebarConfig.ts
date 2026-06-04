@@ -2,6 +2,8 @@ import { t } from 'fyo';
 import { routeFilters } from 'src/utils/filters';
 import { fyo } from '../initFyo';
 import { SidebarConfig, SidebarItem, SidebarRoot } from './types';
+// CUSTOM: addon-contributed sidebar
+import { getAddonSidebar } from 'src/custom';
 
 export function getSidebarConfig(): SidebarConfig {
   const sideBar = getCompleteSidebar();
@@ -302,6 +304,8 @@ function getCompleteSidebar(): SidebarConfig {
     getInventorySidebar(),
     getPOSSidebar(),
     getRegionalSidebar(),
+    // CUSTOM: addon-contributed sidebar roots
+    ...getAddonSidebar(fyo),
     {
       label: t`Setup`,
       name: 'setup',
