@@ -32,4 +32,3 @@ log_creds.txt
 /reports/EstonianAnnualReport/taxonomy/
 .docs/
 .claude/settings.local.json
-.claude/*.original.md
