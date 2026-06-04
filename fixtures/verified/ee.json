@@ -99,6 +99,21 @@
           "isGroup": true
         },
         "Tax Liabilities": {
+          "2305 - EU Establishment Output VAT": {
+            "accountType": "Tax"
+          },
+          "2306 - EU Establishment Input VAT": {
+            "accountType": "Tax"
+          },
+          "2307 - EU Establishment VAT Payable": {
+            "accountType": "Tax"
+          },
+          "2308 - OSS Sales VAT": {
+            "accountType": "Tax"
+          },
+          "2309 - OSS VAT Payable": {
+            "accountType": "Tax"
+          },
           "2310 - Output VAT": {
             "accountType": "Tax"
           },

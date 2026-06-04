@@ -40,6 +40,14 @@ function getTaxAccounts(code: VatCodeName): TaxAccountMap | null {
     case 'ZERO_EU_TRIANGLE':
     case 'ZERO_EXPORT':
     case 'EXEMPT':
+    // No standard Tax template: margin (KMS §41/§42) taxes only the margin;
+    // OSS (§43) and EU establishment use a foreign rate + separate accounts.
+    case 'MARGIN_24':
+    case 'MARGIN_22':
+    case 'MARGIN_9':
+    case 'MARGIN_5':
+    case 'OSS_SALES':
+    case 'EU_FIXED_ESTAB':
       return null;
     default:
       return null;

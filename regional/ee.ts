@@ -11,12 +11,19 @@ export type VatCodeName =
   | 'ZERO_EU_SERVICES'
   | 'ZERO_EU_TRIANGLE'
   | 'ZERO_EXPORT'
-  | 'EXEMPT';
+  | 'EXEMPT'
+  | 'MARGIN_24'
+  | 'MARGIN_22'
+  | 'MARGIN_9'
+  | 'MARGIN_5'
+  | 'OSS_SALES'
+  | 'EU_FIXED_ESTAB';
 
 export interface VatCodeSpec {
   rate: number;
   reverseCharge: boolean;
   description: string;
+  specialScheme?: 'margin' | 'oss' | 'fixedEstablishment';
 }
 
 export const VAT_CODES: Record<VatCodeName, VatCodeSpec> = {
@@ -79,6 +86,48 @@ export const VAT_CODES: Record<VatCodeName, VatCodeSpec> = {
     description: 'Export outside EU (zero-rated)',
   },
   EXEMPT: { rate: 0, reverseCharge: false, description: 'VAT exempt' },
+  MARGIN_24: {
+    rate: 24,
+    reverseCharge: false,
+    specialScheme: 'margin',
+    description:
+      'Margin scheme 24% — used goods/art/antiques (KMS §41,42; KMD line 1, INF erikord)',
+  },
+  MARGIN_22: {
+    rate: 22,
+    reverseCharge: false,
+    specialScheme: 'margin',
+    description:
+      'Margin scheme 22% — historical (2024-01..2025-06; KMD line 12)',
+  },
+  MARGIN_9: {
+    rate: 9,
+    reverseCharge: false,
+    specialScheme: 'margin',
+    description:
+      'Margin scheme 9% — used goods/art/antiques (KMS §41,42; KMD line 2)',
+  },
+  MARGIN_5: {
+    rate: 5,
+    reverseCharge: false,
+    specialScheme: 'margin',
+    description:
+      'Margin scheme 5% — historical press rate (~2022-08..2025-06; KMD line 2¹)',
+  },
+  OSS_SALES: {
+    rate: 0,
+    reverseCharge: false,
+    specialScheme: 'oss',
+    description:
+      'OSS / digital services to EU consumers (§43) — declared on the separate OSS return, not on KMD. Actual rate is per destination country.',
+  },
+  EU_FIXED_ESTAB: {
+    rate: 0,
+    reverseCharge: false,
+    specialScheme: 'fixedEstablishment',
+    description:
+      'Supply via an EU permanent establishment — taxed in that country at its rate, not Estonian turnover (off KMD).',
+  },
 };
 
 export const EE_COUNTIES = [

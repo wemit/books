@@ -124,8 +124,8 @@ export class KmdReport extends Report {
     const jeRows = (await this.fyo.db.getAllRaw(ModelNameEnum.JournalEntry, {
       fields: [
         'name',
-        'lhvVatCode',
-        'lhvArchivalId',
+        'vatCode',
+        'archivalId',
         'euPartnerVat',
         'entryType',
         'date',
@@ -137,20 +137,20 @@ export class KmdReport extends Report {
       },
     })) as Array<{
       name: string;
-      lhvVatCode?: string;
-      lhvArchivalId?: string;
+      vatCode?: string;
+      archivalId?: string;
       euPartnerVat?: string;
       entryType?: string;
     }>;
 
-    const vatTaggedJEs = jeRows.filter((j) => (j.lhvVatCode ?? '') !== '');
+    const vatTaggedJEs = jeRows.filter((j) => (j.vatCode ?? '') !== '');
     const vdAccum = new Map<
       string,
       { goods: number; services: number; triangle: number }
     >();
 
     for (const je of vatTaggedJEs) {
-      const vatCode = je.lhvVatCode as VatCodeName;
+      const vatCode = je.vatCode as VatCodeName;
       const bucket = VAT_CODE_TO_BUCKET[vatCode];
       if (!bucket) continue;
 
@@ -162,7 +162,7 @@ export class KmdReport extends Report {
         }
       )) as Array<{ account: string; debit?: string; credit?: string }>;
 
-      const isRcSelfAssess = (je.lhvArchivalId ?? '').endsWith('-RC');
+      const isRcSelfAssess = (je.archivalId ?? '').endsWith('-RC');
 
       if (isRcSelfAssess) {
         const rcReceivable = accountRows.find(

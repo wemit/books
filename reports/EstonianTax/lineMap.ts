@@ -70,6 +70,14 @@ export const VAT_CODE_TO_BUCKET: Record<VatCodeName, VatCodeBucket | null> = {
     rate: 24,
   },
   EXEMPT: { primary: 'supplyExemptFromTax', side: 'sales', rate: 0 },
+  // Margin scheme (KMS §41/§42): margin reported on the matching rate's line.
+  MARGIN_24: { primary: 'transactions24', side: 'sales', rate: 24 },
+  MARGIN_22: { primary: 'transactions22', side: 'sales', rate: 22 },
+  MARGIN_9: { primary: 'transactions9', side: 'sales', rate: 9 },
+  MARGIN_5: { primary: 'transactions5', side: 'sales', rate: 5 },
+  // Off-KMD: OSS (§43) goes on the OSS return; EU establishment taxed abroad.
+  OSS_SALES: null,
+  EU_FIXED_ESTAB: null,
 };
 
 export function emptyKmdBody(): KmdBodyTotals {

@@ -178,7 +178,7 @@ reports/EstonianAnnualReport/taxonomy/
     └── ...
 ```
 
-The app scans for any `et-gaap_*` folder and picks the latest — no configuration needed when the taxonomy is updated. If the folder is missing, the Validate action shows a clear error dialog before attempting to run Arelle.
+The app scans for any `et-gaap_*` folder and picks the latest — no configuration needed when the taxonomy is updated.
 
 ---
 

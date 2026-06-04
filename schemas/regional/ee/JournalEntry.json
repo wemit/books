@@ -2,14 +2,28 @@
   "name": "JournalEntry",
   "fields": [
     {
-      "fieldname": "lhvArchivalId",
-      "label": "LHV Archival ID",
+      "fieldname": "archivalId",
+      "label": "Bank Archival ID",
       "fieldtype": "Data",
       "readOnly": true,
       "section": "References"
     },
     {
-      "fieldname": "lhvVatCode",
+      "fieldname": "importBank",
+      "label": "Import Bank",
+      "fieldtype": "Select",
+      "options": [
+        { "value": "lhv", "label": "LHV" },
+        { "value": "seb", "label": "SEB" },
+        { "value": "swedbank", "label": "Swedbank" },
+        { "value": "luminor", "label": "Luminor" },
+        { "value": "coop", "label": "Coop Pank" }
+      ],
+      "readOnly": true,
+      "section": "References"
+    },
+    {
+      "fieldname": "vatCode",
       "label": "VAT Code",
       "fieldtype": "Data",
       "readOnly": true,

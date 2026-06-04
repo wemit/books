@@ -1,11 +1,33 @@
 import test from 'tape';
+import { VAT_CODES } from '../../../regional/ee';
 import { emptyKmdBody, pickVersion, VAT_CODE_TO_BUCKET } from '../lineMap';
 
-test('lineMap: every VAT code maps to a bucket', (t) => {
-  for (const code of Object.keys(VAT_CODE_TO_BUCKET)) {
+// Off-KMD codes intentionally map to null: OSS goes on the separate OSS
+// return, an EU permanent establishment's supply is taxed abroad.
+const OFF_KMD = new Set(['OSS_SALES', 'EU_FIXED_ESTAB']);
+
+test('lineMap: every VAT code has an entry (bucket or explicit null)', (t) => {
+  for (const code of Object.keys(VAT_CODES)) {
+    t.ok(
+      code in VAT_CODE_TO_BUCKET,
+      `${code} present in VAT_CODE_TO_BUCKET`
+    );
     const bucket = VAT_CODE_TO_BUCKET[code as keyof typeof VAT_CODE_TO_BUCKET];
-    t.ok(bucket, `${code} has bucket`);
+    if (OFF_KMD.has(code)) {
+      t.equal(bucket, null, `${code} is off-KMD (null)`);
+    } else {
+      t.ok(bucket, `${code} has bucket`);
+    }
   }
+  t.end();
+});
+
+test('lineMap: margin scheme codes feed the matching rate line', (t) => {
+  t.equal(VAT_CODE_TO_BUCKET.MARGIN_24!.primary, 'transactions24');
+  t.equal(VAT_CODE_TO_BUCKET.MARGIN_22!.primary, 'transactions22');
+  t.equal(VAT_CODE_TO_BUCKET.MARGIN_9!.primary, 'transactions9');
+  t.equal(VAT_CODE_TO_BUCKET.MARGIN_5!.primary, 'transactions5');
+  t.equal(VAT_CODE_TO_BUCKET.MARGIN_24!.side, 'sales');
   t.end();
 });
 
