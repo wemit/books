@@ -41,6 +41,16 @@
           </div>
         </div>
       </div>
+      <!-- CUSTOM: addon-contributed list actions -->
+      <Button
+        v-for="addonAction in addonActions"
+        :key="addonAction.label"
+        :icon="false"
+        @click="runAddonAction(addonAction)"
+      >
+        {{ addonAction.label }}
+      </Button>
+      <!-- /CUSTOM -->
       <Button ref="exportButton" :icon="false" @click="openExportModal = true">
         {{ t`Export` }}
       </Button>
@@ -93,6 +103,9 @@ import Modal from 'src/components/Modal.vue';
 import PageHeader from 'src/components/PageHeader.vue';
 
 import { fyo } from 'src/initFyo';
+// CUSTOM: addon-contributed list actions
+import { getAddonListActions } from 'src/custom';
+import type { AddonListAction } from 'src/custom/types';
 import { shortcutsKey } from 'src/utils/injectionKeys';
 import {
   docsPathMap,
@@ -148,6 +161,10 @@ export default defineComponent({
     };
   },
   computed: {
+    // CUSTOM: list actions contributed by addons for this schema
+    addonActions(): AddonListAction[] {
+      return getAddonListActions(this.schemaName, fyo);
+    },
     context(): string {
       return 'ListView-' + this.schemaName;
     },
@@ -264,6 +281,11 @@ export default defineComponent({
 
     updateSelectedItems(selected: string[]) {
       this.selectedItems = selected;
+    },
+    // CUSTOM: run an addon-contributed list action, then refresh
+    async runAddonAction(addonAction: AddonListAction) {
+      await addonAction.action(fyo);
+      await this.list?.updateData();
     },
   },
 });

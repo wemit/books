@@ -7,7 +7,8 @@
     right
   >
     <template #default="{ toggleDropdown }">
-      <Button :type="type" :icon="icon" @click="toggleDropdown()">
+      <!-- CUSTOM: one-click when there's a single action -->
+      <Button :type="type" :icon="icon" @click="onClick(toggleDropdown)">
         <slot>
           <feather-icon name="more-horizontal" class="w-4 h-4" />
         </slot>
@@ -58,6 +59,24 @@ export default defineComponent({
         action,
         component,
       }));
+    },
+    // CUSTOM: single bare action → click runs it directly
+    singleAction(): Action | null {
+      if (this.actions.length === 1 && !this.actions[0].component) {
+        return this.actions[0];
+      }
+      return null;
+    },
+  },
+  methods: {
+    // CUSTOM: run single action on click, else open dropdown
+    async onClick(toggleDropdown: () => void) {
+      const single = this.singleAction;
+      if (single && this.doc) {
+        await single.action(this.doc, this.$router);
+        return;
+      }
+      toggleDropdown();
     },
   },
 });

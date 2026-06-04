@@ -6,6 +6,9 @@ import { ProfitAndLoss } from './ProfitAndLoss/ProfitAndLoss';
 import { TrialBalance } from './TrialBalance/TrialBalance';
 import { StockBalance } from './inventory/StockBalance';
 import { StockLedger } from './inventory/StockLedger';
+// CUSTOM: addon-contributed reports
+import { getAddonReports } from 'src/custom';
+import type { ReportClass } from 'src/custom/types';
 
 export const reports = {
   GeneralLedger,
@@ -16,4 +19,6 @@ export const reports = {
   GSTR2,
   StockLedger,
   StockBalance,
-} as const;
+  // CUSTOM: addon reports (e.g. Estonian KMD / Annual Report)
+  ...getAddonReports(),
+} as Record<string, ReportClass>;

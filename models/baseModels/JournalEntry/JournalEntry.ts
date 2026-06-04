@@ -17,6 +17,8 @@ import {
 import { Transactional } from 'models/Transactional/Transactional';
 import { Money } from 'pesa';
 import { LedgerPosting } from '../../Transactional/LedgerPosting';
+// CUSTOM: post-submit invoice attachment (sidecar)
+import { getAttachInvoiceAction } from './JournalEntry.custom';
 
 export class JournalEntry extends Transactional {
   accounts?: Doc[];
@@ -60,7 +62,7 @@ export class JournalEntry extends Transactional {
   };
 
   static getActions(fyo: Fyo): Action[] {
-    return [getLedgerLinkAction(fyo)];
+    return [getLedgerLinkAction(fyo), /* CUSTOM: */ getAttachInvoiceAction()];
   }
 
   static getListViewSettings(): ListViewSettings {

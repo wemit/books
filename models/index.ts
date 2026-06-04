@@ -128,11 +128,17 @@ export const models = {
 export async function getRegionalModels(
   countryCode: string
 ): Promise<ModelMap> {
-  if (countryCode !== 'in') {
-    return {};
+  if (countryCode === 'in') {
+    const { Address } = await import('./regionalModels/in/Address');
+    const { Party } = await import('./regionalModels/in/Party');
+    return { Address, Party };
   }
 
-  const { Address } = await import('./regionalModels/in/Address');
-  const { Party } = await import('./regionalModels/in/Party');
-  return { Address, Party };
+  // EE: Estonian regional models (native regional pattern)
+  if (countryCode === 'ee') {
+    const { Party } = await import('./regionalModels/ee/Party');
+    return { Party };
+  }
+
+  return {};
 }

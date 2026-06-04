@@ -10,6 +10,8 @@ import config from 'utils/config';
 import type { DatabaseMethod } from 'utils/db/types';
 import type { BackendResponse } from 'utils/ipc/types';
 import { IPC_ACTIONS, IPC_CHANNELS, IPC_MESSAGES } from 'utils/messages';
+// CUSTOM: addon preload IPC surfaces
+import { mainAddonPreload } from './addons/preload';
 import type {
   ConfigFilesWithModified,
   Creds,
@@ -275,6 +277,9 @@ const ipc = {
       return config.delete(key);
     },
   },
+
+  // CUSTOM: addon-contributed IPC namespaces
+  ...mainAddonPreload,
 } as const;
 
 contextBridge.exposeInMainWorld('ipc', ipc);

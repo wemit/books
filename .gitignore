@@ -28,3 +28,7 @@ yarn-error.log*
 #Electron-builder output
 /dist_electron
 log_creds.txt
+
+/reports/EstonianAnnualReport/taxonomy/
+.docs/
+.claude

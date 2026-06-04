@@ -24,6 +24,8 @@ export function getCOAList() {
     { name: t`Standard Chart of Accounts`, countryCode: '' },
 
     { countryCode: 'ae', name: 'U.A.E - Chart of Accounts' },
+    // EE: Estonian CoA (native regional pattern)
+    { countryCode: 'ee', name: 'Estonia - Chart of Accounts' },
     {
       countryCode: 'ca',
       name: 'Canada - Plan comptable pour les provinces francophones',

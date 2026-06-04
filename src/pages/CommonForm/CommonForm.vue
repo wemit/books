@@ -254,6 +254,7 @@ export default defineComponent({
       showLinks: false,
       useFullWidth: false,
       row: null,
+      _onDocLoad: null,
     } as {
       errors: Record<string, string>;
       activeTab: string;
@@ -262,6 +263,7 @@ export default defineComponent({
       showLinks: boolean;
       useFullWidth: boolean;
       row: null | { index: number; fieldname: string };
+      _onDocLoad: ((name: string) => void) | null;
     };
   },
   computed: {
@@ -400,6 +402,9 @@ export default defineComponent({
   activated(): void {
     this.useFullWidth = !!this.fyo.singles.Misc?.useFullWidth;
     docsPathRef.value = docsPathMap[this.schemaName] ?? '';
+    // CUSTOM: refresh grouped fields when the doc reloads programmatically
+    this._onDocLoad = (name: string) => this.onDocLoad(name);
+    this.fyo.doc.observer.on(`load:${this.schemaName}`, this._onDocLoad);
     this.shortcuts?.pmod.set(this.context, ['KeyP'], () => {
       if (!this.canPrint) {
         return;
@@ -419,9 +424,19 @@ export default defineComponent({
     docsPathRef.value = '';
     this.showLinks = false;
     this.row = null;
+    // CUSTOM: detach reload-refresh observer
+    if (this._onDocLoad) {
+      this.fyo.doc.observer.off(`load:${this.schemaName}`, this._onDocLoad);
+    }
   },
   methods: {
     routeTo,
+    // CUSTOM: refresh grouped fields on programmatic doc reload
+    onDocLoad(name: string) {
+      if (this.hasDoc && name === this.doc.name) {
+        this.updateGroupedFields();
+      }
+    },
     async toggleWidth() {
       const value = !this.useFullWidth;
       await this.fyo.singles.Misc?.setAndSync('useFullWidth', value);
