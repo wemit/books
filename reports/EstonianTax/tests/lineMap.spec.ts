@@ -8,10 +8,7 @@ const OFF_KMD = new Set(['OSS_SALES', 'EU_FIXED_ESTAB']);
 
 test('lineMap: every VAT code has an entry (bucket or explicit null)', (t) => {
   for (const code of Object.keys(VAT_CODES)) {
-    t.ok(
-      code in VAT_CODE_TO_BUCKET,
-      `${code} present in VAT_CODE_TO_BUCKET`
-    );
+    t.ok(code in VAT_CODE_TO_BUCKET, `${code} present in VAT_CODE_TO_BUCKET`);
     const bucket = VAT_CODE_TO_BUCKET[code as keyof typeof VAT_CODE_TO_BUCKET];
     if (OFF_KMD.has(code)) {
       t.equal(bucket, null, `${code} is off-KMD (null)`);
