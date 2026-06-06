@@ -16,6 +16,8 @@ jobs:
         include:
           - os: macos-15-intel
             flag: -m
+          - os: macos-latest
+            flag: -m
           - os: windows-2022
             flag: -w
           - os: ubuntu-latest
