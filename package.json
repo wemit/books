@@ -3,8 +3,7 @@
   "version": "0.1.0",
   "description": "Offline desktop accounting with Estonian compliance",
   "author": {
-    "name": "wemit",
-    "email": "priske@vladislav.ee"
+    "name": "wemit"
   },
   "scripts": {
     "dev": "node build/scripts/dev.mjs",

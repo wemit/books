@@ -15,7 +15,7 @@ const buildDirPath = path.join(root, 'dist_electron', 'build');
 const packageDirPath = path.join(root, 'dist_electron', 'bundled');
 
 const frappeBooksConfig = {
-  productName: 'Books',
+  productName: 'wemit-books',
   appId: 'com.wemit.books',
   artifactName: '${productName}-v${version}-${os}-${arch}.${ext}',
   asarUnpack: '**/*.node',
@@ -61,6 +61,9 @@ const frappeBooksConfig = {
       },
     ],
   },
+  portable: {
+    artifactName: '${productName}-v${version}-windows-portable-${arch}.${ext}',
+  },
   nsis: {
     oneClick: false,
     perMachine: false,
@@ -73,6 +76,7 @@ const frappeBooksConfig = {
     icon: 'build/icons',
     artifactName: '${productName}-v${version}-linux-${arch}.${ext}',
     category: 'Finance',
+    maintainer: 'wemit <priske@vladislav.ee>',
     publish: ['github'],
     target: [
       {
