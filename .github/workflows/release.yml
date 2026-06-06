@@ -14,8 +14,6 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - os: macos-15-intel
-            flag: -m
           - os: macos-latest
             flag: -m
           - os: windows-2022
@@ -59,7 +57,7 @@ jobs:
       - name: Download macOS artifacts
         uses: actions/download-artifact@v4
         with:
-          name: dist-macos-15-intel
+          name: dist-macos-latest
           path: dist
 
       - name: Update Homebrew tap
@@ -67,7 +65,7 @@ jobs:
           GH_TOKEN: ${{ secrets.HOMEBREW_TAP_TOKEN }}
         run: |
           VERSION="${GITHUB_REF_NAME#v}"
-          DMG=$(ls dist/wemit-books-v*-mac-x64.dmg 2>/dev/null | head -1)
+          DMG=$(ls dist/wemit-books-v*-mac-arm64.dmg 2>/dev/null | head -1)
           if [ -z "$DMG" ]; then
             echo "No macOS DMG found — skipping Homebrew update"
             exit 0
@@ -86,7 +84,7 @@ jobs:
             printf '  version "%s"\n' "$VERSION"
             printf '  sha256 "%s"\n' "$SHA256"
             printf '\n'
-            printf '  url "https://github.com/wemit/books/releases/download/v#{version}/wemit-books-v#{version}-mac-x64.dmg"\n'
+            printf '  url "https://github.com/wemit/books/releases/download/v#{version}/wemit-books-v#{version}-mac-arm64.dmg"\n'
             printf '  name "wemit-books"\n'
             printf '  desc "Offline desktop accounting with Estonian compliance"\n'
             printf '  homepage "https://github.com/wemit/books"\n'
@@ -120,9 +118,9 @@ jobs:
           GH_TOKEN: ${{ secrets.SCOOP_BUCKET_TOKEN }}
         run: |
           VERSION="${GITHUB_REF_NAME#v}"
-          EXE=$(ls dist/wemit-books-v*-windows-x64.exe 2>/dev/null | head -1)
+          EXE=$(ls dist/wemit-books-v*-windows-portable-x64.exe 2>/dev/null | head -1)
           if [ -z "$EXE" ]; then
-            echo "No Windows installer found — skipping Scoop update"
+            echo "No Windows portable exe found — skipping Scoop update"
             exit 0
           fi
           SHA256=$(sha256sum "$EXE" | cut -d' ' -f1)
@@ -142,11 +140,8 @@ jobs:
               description: "Offline desktop accounting with Estonian compliance",
               homepage: "https://github.com/wemit/books",
               license: "AGPL-3.0",
-              url: ("https://github.com/wemit/books/releases/download/v" + $v + "/wemit-books-v" + $v + "-windows-x64.exe"),
-              hash: $h,
-              installer: {
-                script: ("Start-Process -Wait \"$dir\\wemit-books-v" + $v + "-windows-x64.exe\" -ArgumentList \"/S\"")
-              }
+              url: ("https://github.com/wemit/books/releases/download/v" + $v + "/wemit-books-v" + $v + "-windows-portable-x64.exe"),
+              hash: $h
             }' > bucket/books.json
 
           git add bucket/books.json

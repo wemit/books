@@ -42,6 +42,7 @@ const frappeBooksConfig = {
     darkModeSupport: false,
     entitlements: 'build/entitlements.mac.plist',
     entitlementsInherit: 'build/entitlements.mac.plist',
+    target: ['dmg'],
     publish: ['github'],
   },
   win: {
@@ -50,48 +51,17 @@ const frappeBooksConfig = {
     signDlls: true,
     icon: 'build/icon.ico',
     publish: ['github'],
-    target: [
-      {
-        target: 'nsis',
-        arch: ['x64', 'ia32'],
-      },
-      {
-        target: 'portable',
-        arch: ['x64', 'ia32'],
-      },
-    ],
+    target: [{ target: 'portable', arch: ['x64'] }],
   },
   portable: {
     artifactName: '${productName}-v${version}-windows-portable-${arch}.${ext}',
-  },
-  nsis: {
-    oneClick: false,
-    perMachine: false,
-    allowToChangeInstallationDirectory: true,
-    installerIcon: 'build/installericon.ico',
-    uninstallerIcon: 'build/uninstallericon.ico',
-    publish: ['github'],
   },
   linux: {
     icon: 'build/icons',
     artifactName: '${productName}-v${version}-linux-${arch}.${ext}',
     category: 'Finance',
-    maintainer: 'wemit <priske@vladislav.ee>',
     publish: ['github'],
-    target: [
-      {
-        target: 'deb',
-        arch: ['x64', 'arm64'],
-      },
-      {
-        target: 'AppImage',
-        arch: ['x64'],
-      },
-      {
-        target: 'rpm',
-        arch: ['x64', 'arm64'],
-      },
-    ],
+    target: [{ target: 'AppImage', arch: ['x64'] }],
   },
 };
 
