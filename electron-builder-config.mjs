@@ -15,8 +15,8 @@ const buildDirPath = path.join(root, 'dist_electron', 'build');
 const packageDirPath = path.join(root, 'dist_electron', 'bundled');
 
 const frappeBooksConfig = {
-  productName: 'wemit-books',
-  appId: 'com.wemit.books',
+  productName: 'arveli',
+  appId: 'com.wemit.arveli',
   artifactName: '${productName}-v${version}-${os}-${arch}.${ext}',
   asarUnpack: '**/*.node',
   extraResources: [

@@ -195,6 +195,56 @@ yarn build        # package the desktop app
 
 ---
 
+## Translations
+
+The app ships Russian (`ru`) and Estonian (`et`). English is the source language (upstream). All translation data lives in `scripts/gen_translations.py` as a Python list — the CSV files in `translations/` are generated output, never edited directly.
+
+### Adding new strings
+
+After an upstream merge, run the full check against any upstream language CSV:
+
+```bash
+python3 scripts/gen_translations.py --check-upstream path/to/upstream-de.csv
+```
+
+This diffs upstream CSV source strings against `STRINGS` and scans source files for any strings that need attention. After adding new `t\`...\`` calls to the EE addon without a merge, a codebase scan is enough:
+
+```bash
+python3 scripts/gen_translations.py --check
+```
+
+Get paste-ready stubs (`--stub` for codebase scan, `--stub-upstream FILE` to diff against an upstream CSV):
+
+```bash
+python3 scripts/gen_translations.py --stub > missing.txt
+# or
+python3 scripts/gen_translations.py --stub-upstream path/to/upstream-de.csv > missing.txt
+```
+
+Output looks like:
+
+```python
+    ('New string here', "TODO_RU", "TODO_ET"),
+    ('Another string',  "TODO_RU", "TODO_ET"),
+```
+
+Fill in translations, paste into the `STRINGS` list in `scripts/gen_translations.py`, then rebuild:
+
+```bash
+python3 scripts/gen_translations.py   # writes translations/ru.csv and translations/et.csv
+```
+
+Only the new stubs need translating — existing strings in `STRINGS` are untouched.
+
+### Adding a new language
+
+1. Add `'Language Name': 'code'` to `languageCodeMap` in `src/utils/language.ts`
+2. Add a column to every tuple in `STRINGS` (index 3, 4, …)
+3. Update `cmd_build()` in the script to call `write_lang(new_col_idx, "code.csv")`
+4. Run the script
+
+---
+
 ## License & attribution
 
 Licensed under the **GNU AGPL-3.0** — see [`LICENSE`](./LICENSE). This project is an independent fork.

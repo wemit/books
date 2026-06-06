@@ -11,7 +11,7 @@ jobs:
         with:
           node-version: '20.18.1'
 
-      - name: Checkout Books
+      - name: Checkout Arveli
         uses: actions/checkout@v4
 
       - name: Install Dependencies
@@ -61,7 +61,7 @@ jobs:
         with:
           node-version: '20.18.1'
 
-      - name: Checkout Books
+      - name: Checkout Arveli
         uses: actions/checkout@v4
 
       - name: Install Dependencies
@@ -111,7 +111,7 @@ jobs:
         with:
           node-version: '20.18.1'
 
-      - name: Checkout Books
+      - name: Checkout Arveli
         uses: actions/checkout@v4
 
       - name: Install Dependencies
@@ -159,7 +159,7 @@ jobs:
         with:
           node-version: '20.18.1'
 
-      - name: Checkout Books
+      - name: Checkout Arveli
         uses: actions/checkout@v4
 
       - name: Install Dependencies

@@ -65,14 +65,14 @@ jobs:
           GH_TOKEN: ${{ secrets.HOMEBREW_TAP_TOKEN }}
         run: |
           VERSION="${GITHUB_REF_NAME#v}"
-          DMG=$(ls dist/wemit-books-v*-mac-arm64.dmg 2>/dev/null | head -1)
+          DMG=$(ls dist/arveli-v*-mac-arm64.dmg 2>/dev/null | head -1)
           if [ -z "$DMG" ]; then
             echo "No macOS DMG found — skipping Homebrew update"
             exit 0
           fi
           SHA256=$(sha256sum "$DMG" | cut -d' ' -f1)
 
-          git clone https://x-access-token:${GH_TOKEN}@github.com/wemit/homebrew-books.git tap
+          git clone https://x-access-token:${GH_TOKEN}@github.com/wemit/homebrew-arveli.git tap
           cd tap
           git config user.email "actions@github.com"
           git config user.name "github-actions"
@@ -80,27 +80,27 @@ jobs:
 
           mkdir -p Casks
           {
-            printf 'cask "wemit-books" do\n'
+            printf 'cask "arveli" do\n'
             printf '  version "%s"\n' "$VERSION"
             printf '  sha256 "%s"\n' "$SHA256"
             printf '\n'
-            printf '  url "https://github.com/wemit/books/releases/download/v#{version}/wemit-books-v#{version}-mac-arm64.dmg"\n'
-            printf '  name "wemit-books"\n'
+            printf '  url "https://github.com/wemit/arveli/releases/download/v#{version}/arveli-v#{version}-mac-arm64.dmg"\n'
+            printf '  name "arveli"\n'
             printf '  desc "Offline desktop accounting with Estonian compliance"\n'
-            printf '  homepage "https://github.com/wemit/books"\n'
+            printf '  homepage "https://github.com/wemit/arveli"\n'
             printf '\n'
-            printf '  app "wemit-books.app"\n'
+            printf '  app "arveli.app"\n'
             printf 'end\n'
-          } > Casks/wemit-books.rb
+          } > Casks/arveli.rb
 
-          git add Casks/wemit-books.rb
+          git add Casks/arveli.rb
           git commit -m "books v${VERSION}"
           git push --force origin "release-${VERSION}"
 
           curl -s -X POST \
             -H "Authorization: Bearer ${GH_TOKEN}" \
             -H "Accept: application/vnd.github+json" \
-            https://api.github.com/repos/wemit/homebrew-books/pulls \
+            https://api.github.com/repos/wemit/homebrew-arveli/pulls \
             -d "{\"title\":\"books v${VERSION}\",\"head\":\"release-${VERSION}\",\"base\":\"main\",\"body\":\"Automated cask update for v${VERSION}.\"}"
 
   scoop:
@@ -118,14 +118,14 @@ jobs:
           GH_TOKEN: ${{ secrets.SCOOP_BUCKET_TOKEN }}
         run: |
           VERSION="${GITHUB_REF_NAME#v}"
-          EXE=$(ls dist/wemit-books-v*-windows-portable-x64.exe 2>/dev/null | head -1)
+          EXE=$(ls dist/arveli-v*-windows-portable-x64.exe 2>/dev/null | head -1)
           if [ -z "$EXE" ]; then
             echo "No Windows portable exe found — skipping Scoop update"
             exit 0
           fi
           SHA256=$(sha256sum "$EXE" | cut -d' ' -f1)
 
-          git clone https://x-access-token:${GH_TOKEN}@github.com/wemit/scoop-books.git bucket
+          git clone https://x-access-token:${GH_TOKEN}@github.com/wemit/scoop-arveli.git bucket
           cd bucket
           git config user.email "actions@github.com"
           git config user.name "github-actions"
@@ -138,18 +138,18 @@ jobs:
             '{
               version: $v,
               description: "Offline desktop accounting with Estonian compliance",
-              homepage: "https://github.com/wemit/books",
+              homepage: "https://github.com/wemit/arveli",
               license: "AGPL-3.0",
-              url: ("https://github.com/wemit/books/releases/download/v" + $v + "/wemit-books-v" + $v + "-windows-portable-x64.exe"),
+              url: ("https://github.com/wemit/arveli/releases/download/v" + $v + "/arveli-v" + $v + "-windows-portable-x64.exe"),
               hash: $h
-            }' > bucket/books.json
+            }' > bucket/arveli.json
 
-          git add bucket/books.json
+          git add bucket/arveli.json
           git commit -m "books v${VERSION}"
           git push --force origin "release-${VERSION}"
 
           curl -s -X POST \
             -H "Authorization: Bearer ${GH_TOKEN}" \
             -H "Accept: application/vnd.github+json" \
-            https://api.github.com/repos/wemit/scoop-books/pulls \
+            https://api.github.com/repos/wemit/scoop-arveli/pulls \
             -d "{\"title\":\"books v${VERSION}\",\"head\":\"release-${VERSION}\",\"base\":\"main\",\"body\":\"Automated manifest update for v${VERSION}.\"}"

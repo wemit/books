@@ -70,7 +70,7 @@ export default defineComponent({
     this.groups = [
       {
         label: t`Global`,
-        description: t`Applicable anywhere in Books`,
+        description: t`Applicable anywhere in Arveli`,
         collapsed: false,
         shortcuts: [
           {

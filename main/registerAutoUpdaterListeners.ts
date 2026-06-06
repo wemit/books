@@ -52,7 +52,7 @@ export default function registerAutoUpdaterListeners(main: Main) {
     const option = await dialog.showMessageBox({
       type: 'info',
       title: 'Update Downloaded',
-      message: 'Restart Books to install update?',
+      message: 'Restart Arveli to install update?',
       buttons: ['Yes', 'No'],
     });
 

@@ -22,7 +22,7 @@ jobs:
       - name: Set yarn version
         run: yarn set version 1.22.18
 
-      - name: Checkout Books
+      - name: Checkout Arveli
         uses: actions/checkout@v4
 
       - name: Install Dependencies
