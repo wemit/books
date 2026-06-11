@@ -8,6 +8,7 @@ import {
 } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import { constants } from 'fs';
+import type { RequestInit as NodeFetchRequestInit } from 'node-fetch';
 import fs from 'fs-extra';
 import path from 'path';
 import { APP_NAME } from 'utils/consts';
@@ -257,7 +258,7 @@ export default function registerIpcMainActionListeners(main: Main) {
 
   ipcMain.handle(
     IPC_ACTIONS.SEND_API_REQUEST,
-    async (e, endpoint: string, options: RequestInit | undefined) => {
+    async (e, endpoint: string, options: NodeFetchRequestInit | undefined) => {
       return sendAPIRequest(endpoint, options);
     }
   );

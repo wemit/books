@@ -31,7 +31,10 @@ export async function connectToDatabase(
     return {
       countryCode: '',
       error,
-      actionSymbol: await handleDatabaseConnectionError(error, dbPath),
+      actionSymbol: (await handleDatabaseConnectionError(
+        error,
+        dbPath
+      )) as Conn['actionSymbol'],
     };
   }
 }

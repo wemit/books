@@ -16,6 +16,35 @@ const MAPPING = mappingJson as unknown as AccountMapping;
 
 const TAXONOMY_VERSION = '2026-01-01';
 
+// EE: display labels for report rows; thunks defer t`` until the language
+// map is loaded. XBRL output uses the raw element names, never these.
+const ELEMENT_LABELS: Record<string, () => string> = {
+  CurrentAssets: () => t`Current Assets`,
+  NonCurrentAssets: () => t`Non-Current Assets`,
+  Assets: () => t`Assets`,
+  CurrentLiabilities: () => t`Current Liabilities`,
+  NonCurrentLiabilities: () => t`Non-Current Liabilities`,
+  Liabilities: () => t`Liabilities`,
+  IssuedCapital: () => t`Issued Capital`,
+  RetainedEarnings: () => t`Retained Earnings`,
+  UnpaidCapital: () => t`Unpaid Capital`,
+  Equity: () => t`Equity`,
+  LiabilitiesAndEquity: () => t`Liabilities and Equity`,
+  Revenue: () => t`Revenue`,
+  OtherIncome: () => t`Other Income`,
+  OtherOperatingExpense: () => t`Other Operating Expense`,
+  EmployeeExpense: () => t`Employee Expense`,
+  DepreciationAndImpairmentLossReversal: () =>
+    t`Depreciation and Impairment Loss (Reversal)`,
+  TotalProfitLossBeforeTax: () => t`Total Profit/Loss Before Tax`,
+  IncomeTaxExpense: () => t`Income Tax Expense`,
+  TotalAnnualPeriodProfitLoss: () => t`Total Annual Period Profit/Loss`,
+};
+
+function elementLabel(el: string): string {
+  return ELEMENT_LABELS[el]?.() ?? el;
+}
+
 interface AccountInfo {
   name: string;
   rootType: AccountRootType;
@@ -369,7 +398,12 @@ export class AnnualReport extends Report {
     const facts = [...d.balanceSheet, ...d.incomeStatement];
     return facts.map<ReportRow>((f) => ({
       cells: [
-        { rawValue: f.element, value: f.element, width: 2, align: 'left' },
+        {
+          rawValue: f.element,
+          value: elementLabel(f.element),
+          width: 2,
+          align: 'left',
+        },
         { rawValue: f.context, value: f.context, width: 1, align: 'left' },
         {
           rawValue: f.value,
