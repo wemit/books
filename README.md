@@ -1,6 +1,9 @@
 <div align="center" markdown="1">
 
-<h1>Books</h1>
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="icons/wordmark-white.png">
+  <img src="icons/wordmark.png" alt="Bilantt" width="360">
+</picture>
 
 **Offline desktop accounting, with Estonian compliance and a modular country-addon system.**
 
@@ -142,31 +145,33 @@ That's it — every Latvian feature is live, with **no** edits to `reports/index
 **macOS** — [Homebrew](https://brew.sh):
 
 ```bash
-brew install --cask wemit/books/books
+brew install --cask wemit/bilantt/bilantt
 ```
 
 **Windows** — [Scoop](https://scoop.sh):
 
 ```bash
-scoop bucket add books https://github.com/wemit/scoop-books
-scoop install books
+scoop bucket add bilantt https://github.com/wemit/scoop-bilantt
+scoop install bilantt
 ```
 
-Or download pre-built binaries from the [Releases](https://github.com/wemit/books/releases) page: `.dmg` for macOS (if Gatekeeper blocks it, right-click → Open), `.exe` installer for Windows, `.AppImage` / `.deb` / `.rpm` for Linux.
+Or download pre-built binaries from the [Releases](https://github.com/wemit/bilantt/releases) page: `.dmg` for macOS (if Gatekeeper blocks it, right-click → Open), portable `.exe` for Windows, `.AppImage` for Linux.
 
-### Arelle (Estonian Annual Report only)
+### Arelle (Annual Report validation only)
 
-XBRL validation of the Annual Report requires [Arelle](https://arelle.readthedocs.io/en/latest/install.html) to be installed separately. Once installed, set **Setup → Settings → General → Arelle CLI Path** to the `arellecmdline` executable. Arelle is not needed for any other feature.
+Generating and exporting the Annual Report XBRL needs **no** extra installs — Arelle and the taxonomy below are required only for the optional **Validate** action, which checks an exported file against the taxonomy before you upload it to the RIK portal.
 
-### Estonian GAAP taxonomy (Estonian Annual Report only)
+To enable validation, install [Arelle](https://arelle.readthedocs.io/en/latest/install.html) separately, then set **Setup → Settings → General → Arelle CLI Path** to the `arellecmdline` executable. Arelle is not needed for any other feature.
 
-Arelle validation also requires the Estonian GAAP XBRL taxonomy, which is not bundled in the repo.
+### Estonian GAAP taxonomy (Annual Report validation only)
+
+Validation also requires the Estonian GAAP XBRL taxonomy, which is not bundled in the repo (the exporter itself only references the taxonomy namespace — it never reads these files).
 
 1. Download the taxonomy zip from [xbrl.eesti.ee](https://xbrl.eesti.ee) (look for the `et-gaap_<year>` package).
 2. Unzip it — you should get a folder named `et-gaap_<year>` (e.g. `et-gaap_2026-01-01`).
 3. Place that folder inside the app's taxonomy directory:
    - **Dev build:** `reports/EstonianAnnualReport/taxonomy/`
-   - **Packaged app (macOS):** `Books.app/Contents/Resources/app/reports/EstonianAnnualReport/taxonomy/`
+   - **Packaged app (macOS):** `Bilantt.app/Contents/Resources/app/reports/EstonianAnnualReport/taxonomy/`
    - **Packaged app (Windows/Linux):** `resources/app/reports/EstonianAnnualReport/taxonomy/`
 
 The expected structure after placement:
@@ -197,51 +202,32 @@ yarn build        # package the desktop app
 
 ## Translations
 
-The app ships Russian (`ru`) and Estonian (`et`). English is the source language (upstream). All translation data lives in `scripts/gen_translations.py` as a Python list — the CSV files in `translations/` are generated output, never edited directly.
+The app ships Russian (`ru`) and Estonian (`et`). English is the source language: the English text inside each `t\`...\``call (and each schema`label`/`description`/`placeholder`) **is** the translation key — there is no separate key namespace and no `en.csv`. The CSV files in `translations/` are the **source of truth** and are edited directly.
 
 ### Adding new strings
 
-After an upstream merge, run the full check against any upstream language CSV:
+Write the UI string in English as `t\`...\``(or as a schema`label`), then sync the CSVs:
 
 ```bash
-python3 scripts/gen_translations.py --check-upstream path/to/upstream-de.csv
+yarn script:translate
 ```
 
-This diffs upstream CSV source strings against `STRINGS` and scans source files for any strings that need attention. After adding new `t\`...\`` calls to the EE addon without a merge, a codebase scan is enough:
+The script scans all source files — including `schemas/regional/` and the EE chart-of-accounts descriptions in `fixtures/verified/ee.json` (fork extensions) — and rewrites every `translations/*.csv` in place: new strings get an empty translation column, existing translations are preserved, dead strings are removed. Fill in the empty second column for the new rows and you're done.
+
+List untranslated rows:
 
 ```bash
-python3 scripts/gen_translations.py --check
+python3 -c "
+import csv
+for r in csv.reader(open('translations/et.csv', newline='')):
+    if len(r) >= 2 and r[0] and not r[1]: print(r[0])"
 ```
-
-Get paste-ready stubs (`--stub` for codebase scan, `--stub-upstream FILE` to diff against an upstream CSV):
-
-```bash
-python3 scripts/gen_translations.py --stub > missing.txt
-# or
-python3 scripts/gen_translations.py --stub-upstream path/to/upstream-de.csv > missing.txt
-```
-
-Output looks like:
-
-```python
-    ('New string here', "TODO_RU", "TODO_ET"),
-    ('Another string',  "TODO_RU", "TODO_ET"),
-```
-
-Fill in translations, paste into the `STRINGS` list in `scripts/gen_translations.py`, then rebuild:
-
-```bash
-python3 scripts/gen_translations.py   # writes translations/ru.csv and translations/et.csv
-```
-
-Only the new stubs need translating — existing strings in `STRINGS` are untouched.
 
 ### Adding a new language
 
 1. Add `'Language Name': 'code'` to `languageCodeMap` in `src/utils/language.ts`
-2. Add a column to every tuple in `STRINGS` (index 3, 4, …)
-3. Update `cmd_build()` in the script to call `write_lang(new_col_idx, "code.csv")`
-4. Run the script
+2. Run `yarn script:translate -l code` to generate `translations/code.csv`
+3. Fill in the translation column
 
 ---
 

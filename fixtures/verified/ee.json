@@ -11,6 +11,18 @@
           "1010 - LHV": {
             "accountType": "Bank"
           },
+          "1020 - Swedbank": {
+            "accountType": "Bank"
+          },
+          "1030 - SEB": {
+            "accountType": "Bank"
+          },
+          "1040 - Luminor": {
+            "accountType": "Bank"
+          },
+          "1050 - Coop Pank": {
+            "accountType": "Bank"
+          },
           "accountType": "Bank",
           "isGroup": true
         },

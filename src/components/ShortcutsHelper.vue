@@ -50,6 +50,7 @@
 <script lang="ts">
 import { t } from 'fyo';
 import { ShortcutKey } from 'src/utils/ui';
+import { APP_NAME } from 'utils/consts';
 import { defineComponent } from 'vue';
 import FormHeader from './FormHeader.vue';
 import ShortcutKeys from './ShortcutKeys.vue';
@@ -70,7 +71,7 @@ export default defineComponent({
     this.groups = [
       {
         label: t`Global`,
-        description: t`Applicable anywhere in Arveli`,
+        description: t`Applicable anywhere in ${APP_NAME}`,
         collapsed: false,
         shortcuts: [
           {

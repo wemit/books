@@ -4,6 +4,8 @@ import { groupBy } from 'lodash';
 import { ModelNameEnum } from 'models/types';
 import { reports } from 'reports';
 import { OptionField } from 'schemas/types';
+// CUSTOM: hide addon reports whose condition fails for this company
+import { getDisabledAddonReportNames } from 'src/custom';
 import { createFilters, routeFilters } from 'src/utils/filters';
 import { GetAllOptions } from 'utils/db/types';
 import { safeParseFloat } from 'utils/index';
@@ -164,6 +166,8 @@ function getCreateList(fyo: Fyo): SearchItem[] {
 function getReportList(fyo: Fyo): SearchItem[] {
   const hasGstin = !!fyo.singles?.AccountingSettings?.gstin;
   const hasInventory = !!fyo.singles?.AccountingSettings?.enableInventory;
+  // CUSTOM: addon reports gated by their addon's condition
+  const disabledAddonReports = getDisabledAddonReportNames(fyo);
   const reportNames = Object.keys(reports);
   return reportNames
     .filter((r) => {
@@ -173,6 +177,11 @@ function getReportList(fyo: Fyo): SearchItem[] {
       }
 
       if (report.title.startsWith('GST') && !hasGstin) {
+        return false;
+      }
+
+      // CUSTOM:
+      if (disabledAddonReports.includes(r)) {
         return false;
       }
       return true;

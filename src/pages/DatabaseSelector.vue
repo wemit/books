@@ -19,10 +19,9 @@
       "
       style="height: 700px"
     >
-      <!-- Welcome to Arveli -->
       <div class="px-4 py-4">
         <h1 class="text-2xl font-semibold select-none dark:text-gray-25">
-          {{ t`Welcome to Arveli` }}
+          {{ t`Welcome to ${APP_NAME}` }}
         </h1>
         <p class="text-gray-600 dark:text-gray-400 text-base select-none">
           {{
@@ -126,7 +125,7 @@
             {{ t`Create Demo` }}
           </p>
           <p class="text-sm text-gray-600 dark:text-gray-400">
-            {{ t`Create a demo company to try out Arveli` }}
+            {{ t`Create a demo company to try out ${APP_NAME}` }}
           </p>
         </div>
       </div>
@@ -319,6 +318,7 @@ import Modal from 'src/components/Modal.vue';
 import { fyo } from 'src/initFyo';
 import { showDialog } from 'src/utils/interactive';
 import { updateConfigFiles } from 'src/utils/misc';
+import { APP_NAME } from 'utils/consts';
 import { deleteDb, getSavePath, getSelectedFilePath } from 'src/utils/ui';
 import type { ConfigFilesWithModified } from 'utils/types';
 import { defineComponent } from 'vue';
@@ -335,6 +335,7 @@ export default defineComponent({
   emits: ['file-selected', 'new-database'],
   data() {
     return {
+      APP_NAME,
       openModal: false,
       baseCount: 100,
       creationMessage: '',
@@ -343,6 +344,7 @@ export default defineComponent({
       loadingDatabase: false,
       files: [],
     } as {
+      APP_NAME: string;
       openModal: boolean;
       baseCount: number;
       creationMessage: string;

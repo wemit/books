@@ -3,6 +3,7 @@ import { Action } from 'fyo/model/types';
 import { Verb } from 'fyo/telemetry/types';
 import { getSavePath, showExportInFolder } from 'src/utils/ui';
 import { getIsNullOrUndef } from 'utils';
+import { APP_NAME } from 'utils/consts';
 import { generateCSV } from 'utils/csvParser';
 import { Report } from './Report';
 import { ExportExtention, ReportCell } from './types';
@@ -114,7 +115,7 @@ function getJsonData(report: Report): string {
    */
   exportObject.timestamp = new Date().toISOString();
   exportObject.reportName = report.reportName;
-  exportObject.softwareName = 'Arveli';
+  exportObject.softwareName = APP_NAME;
   exportObject.softwareVersion = report.fyo.store.appVersion;
 
   return JSON.stringify(exportObject);

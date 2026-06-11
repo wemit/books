@@ -282,8 +282,33 @@ function pushTStringsFromSchema(
 
 async function getSchemaTStrings() {
   const root = path.resolve(__dirname, '../schemas');
-  const fileList = await getFileList(root, ['tests', 'regional'], /\.json$/);
+  // CUSTOM: include schemas/regional — fork translates regional field labels
+  const fileList = await getFileList(root, ['tests'], /\.json$/);
   return await getTStringsFromJsonFileList(fileList);
+}
+
+// CUSTOM: COA descriptions are DB data translated at display time
+// (ChartOfAccounts tn()) — keep them in the CSVs
+async function getCoaTStrings(): Promise<string[]> {
+  const coaPath = path.resolve(__dirname, '../fixtures/verified/ee.json');
+  const content = await fs.readFile(coaPath, { encoding: 'utf-8' });
+  const coa = JSON.parse(content) as { tree: UnknownMap };
+
+  const names: string[] = [];
+  const walk = (node: UnknownMap) => {
+    for (const key of Object.keys(node)) {
+      const value = node[key];
+      if (typeof value !== 'object' || value === null || Array.isArray(value)) {
+        continue;
+      }
+
+      names.push(key.replace(/^\d+\s*-\s*/, ''));
+      walk(value as UnknownMap);
+    }
+  };
+
+  walk(coa.tree);
+  return names;
 }
 
 async function run() {
@@ -300,7 +325,12 @@ async function run() {
   const contents: Content[] = await getFileContents(fileList);
   const tMap: Map<string, string[]> = await getAllTStringsMap(contents);
   const schemaTStrings: string[] = await getSchemaTStrings();
-  const tArray: string[] = tStringsToArray(tMap, schemaTStrings);
+  // CUSTOM: COA descriptions translated at display time
+  const coaTStrings: string[] = await getCoaTStrings();
+  const tArray: string[] = tStringsToArray(tMap, [
+    ...schemaTStrings,
+    ...coaTStrings,
+  ]);
 
   try {
     await fs.stat(translationsFolder);

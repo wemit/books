@@ -14,9 +14,9 @@ const root = dirname; // redundant, but is meant to keep with the previous line
 const buildDirPath = path.join(root, 'dist_electron', 'build');
 const packageDirPath = path.join(root, 'dist_electron', 'bundled');
 
-const frappeBooksConfig = {
-  productName: 'arveli',
-  appId: 'com.wemit.arveli',
+const electronBuilderConfig = {
+  productName: 'Bilantt',
+  appId: 'com.wemit.bilantt',
   artifactName: '${productName}-v${version}-${os}-${arch}.${ext}',
   asarUnpack: '**/*.node',
   extraResources: [
@@ -65,4 +65,4 @@ const frappeBooksConfig = {
   },
 };
 
-export default frappeBooksConfig;
+export default electronBuilderConfig;

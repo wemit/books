@@ -1,16 +1,4 @@
-/**
- * CUSTOM — github.com/wemit/books
- *
- * Estonia addon — renderer half. Bundles the EE app-level contributions
- * (reports, bank-import route, sidebar, Submit-Drafts list action) behind one
- * manifest so they register through the addon aggregator instead of being
- * scattered across core registries.
- *
- * Country-scoped data (EE models, schemas, setup records, COA, settings
- * fields) stays on upstream's native regional system — see models/index.ts,
- * schemas/regional, src/regional/index.ts. The EE main-process half (Arelle
- * XBRL validation IPC) lives in main/addons/ee.ts.
- */
+// CUSTOM: Estonia addon manifest — renderer half (main-process half in main/addons/)
 import { t } from 'fyo';
 import type { Fyo } from 'fyo';
 import { ModelNameEnum } from 'models/types';
@@ -22,10 +10,7 @@ import type { AppAddon } from '../types';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 function getEstoniaSidebar(_fyo: Fyo): SidebarRoot[] {
-  // Always shown for EE companies (outer addon condition gates the country).
-  // No VAT-number gate: an EE company without a VAT number still needs the
-  // sidebar. KMD viewing is harmless when un-registered, and the XML export
-  // self-guards (throws if Registry Code is unset) at the point it matters.
+  // EE: no VAT-number gate — un-registered EE company still needs the sidebar
   return [
     {
       label: t`Estonia`,
@@ -109,8 +94,7 @@ const ee: AppAddon = {
     {
       path: '/regional/ee/bank-import',
       name: 'EE Bank Import',
-      // Lazy: keeps the heavy page out of the eager addon import graph
-      // (it transitively loads reports/index, which loads this addon).
+      // CUSTOM: lazy — eager import cycles back through reports/index
       component: () => import('src/pages/BankImport/BankImportPage.vue'),
     },
   ],

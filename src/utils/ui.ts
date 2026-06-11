@@ -23,6 +23,7 @@ import { Schema } from 'schemas/types';
 import { handleErrorWithDialog } from 'src/errorHandling';
 import { fyo } from 'src/initFyo';
 import router from 'src/router';
+import { APP_NAME } from 'utils/consts';
 import { assertIsType } from 'utils/index';
 import { SelectFileOptions } from 'utils/types';
 import { RouteLocationRaw } from 'vue-router';
@@ -1045,7 +1046,7 @@ export async function deleteDb(filePath: string) {
   } else if (error?.code === 'EPERM') {
     await showDialog({
       title: t`Cannot Delete`,
-      detail: t`Close Arveli and try manually.`,
+      detail: t`Close ${APP_NAME} and try manually.`,
       type: 'error',
     });
   } else if (error) {

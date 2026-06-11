@@ -21,9 +21,10 @@ import registerAutoUpdaterListeners from './main/registerAutoUpdaterListeners';
 import registerIpcMainActionListeners from './main/registerIpcMainActionListeners';
 import registerIpcMainMessageListeners from './main/registerIpcMainMessageListeners';
 import registerProcessListeners from './main/registerProcessListeners';
+import { APP_NAME } from 'utils/consts';
 
 export class Main {
-  title = 'Arveli';
+  title = APP_NAME;
   icon: string;
 
   winURL = '';

@@ -47,6 +47,7 @@
 <script lang="ts">
 import { RTL_LANGUAGES } from 'fyo/utils/consts';
 import { ModelNameEnum } from 'models/types';
+import { APP_NAME } from 'utils/consts';
 import { systemLanguageRef } from 'src/utils/refs';
 import { defineComponent, provide, ref, Ref } from 'vue';
 import WindowsTitleBar from './components/WindowsTitleBar.vue';
@@ -187,7 +188,7 @@ export default defineComponent({
           title: this.t`Cannot open file`,
           type: 'error',
           detail: this
-            .t`Books does not have access to the selected file: ${filePath}`,
+            .t`${APP_NAME} does not have access to the selected file: ${filePath}`,
         });
 
         fyo.config.set('lastSelectedFilePath', null);

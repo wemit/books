@@ -1,13 +1,4 @@
-/**
- * CUSTOM — github.com/wemit/books
- *
- * Post-submit invoice attachment for Journal Entries. Submitted docs are
- * immutable, so the action writes only the `attachment` column via a direct
- * db update, leaving ledger postings untouched.
- *
- * Kept in a sidecar so the core JournalEntry.ts only carries a one-line hook
- * (see `getActions`), minimizing merge conflicts against upstream.
- */
+// CUSTOM: post-submit invoice attachment — writes only the attachment column, ledger untouched
 import { t } from 'fyo';
 import { Action } from 'fyo/model/types';
 import { ModelNameEnum } from 'models/types';

@@ -10,6 +10,7 @@ import { autoUpdater } from 'electron-updater';
 import { constants } from 'fs';
 import fs from 'fs-extra';
 import path from 'path';
+import { APP_NAME } from 'utils/consts';
 import { SelectFileOptions, SelectFileReturn } from 'utils/types';
 import databaseManager from '../backend/database/manager';
 import { emitMainProcessError } from '../backend/helpers';
@@ -57,7 +58,8 @@ export default function registerIpcMainActionListeners(main: Main) {
         root = 'dbs';
       }
 
-      const dbsPath = path.join(root, 'Arveli');
+      // CUSTOM: changing APP_NAME moves where new databases are created
+      const dbsPath = path.join(root, APP_NAME);
       const backupPath = path.join(dbsPath, 'backups');
       await fs.ensureDir(backupPath);
 

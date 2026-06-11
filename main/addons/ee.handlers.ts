@@ -1,9 +1,4 @@
-/**
- * CUSTOM — github.com/wemit/books
- *
- * Estonia addon — main-process IPC handlers (Arelle XBRL validation). Imports
- * node-bound arelleValidator, so it stays out of the preload bundle.
- */
+// CUSTOM: EE addon main-process IPC handlers (Arelle XBRL validation)
 import { ipcMain } from 'electron';
 import {
   ValidateOptions,

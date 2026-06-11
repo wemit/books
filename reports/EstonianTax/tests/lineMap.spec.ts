@@ -2,8 +2,7 @@ import test from 'tape';
 import { VAT_CODES } from '../../../regional/ee';
 import { emptyKmdBody, pickVersion, VAT_CODE_TO_BUCKET } from '../lineMap';
 
-// Off-KMD codes intentionally map to null: OSS goes on the separate OSS
-// return, an EU permanent establishment's supply is taxed abroad.
+// EE: off-KMD codes map to null — OSS files separately, PE supply taxed abroad
 const OFF_KMD = new Set(['OSS_SALES', 'EU_FIXED_ESTAB']);
 
 test('lineMap: every VAT code has an entry (bucket or explicit null)', (t) => {

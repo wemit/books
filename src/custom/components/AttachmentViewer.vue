@@ -1,14 +1,7 @@
-<!--
-  CUSTOM — github.com/wemit/books
-
-  In-app viewer for an Attachment value (image or PDF). Renders the in-memory
-  data URL directly — no download, no temp file. PDFs use Chromium's built-in
-  viewer, which requires `webPreferences.plugins: true` (set in main.ts).
--->
+<!-- CUSTOM: in-app attachment viewer; PDF rendering needs webPreferences.plugins (main.ts) -->
 <template>
   <Modal :open-modal="openModal" @closemodal="$emit('closemodal')">
     <div class="flex flex-col" style="width: 80vw; height: 85vh">
-      <!-- Header -->
       <div
         class="
           flex
@@ -32,7 +25,6 @@
         </button>
       </div>
 
-      <!-- Body -->
       <div class="flex-1 overflow-auto bg-gray-100 dark:bg-gray-900">
         <img
           v-if="isImage"

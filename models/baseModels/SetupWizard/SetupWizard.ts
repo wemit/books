@@ -4,6 +4,8 @@ import { FormulaMap, ListsMap, ValidationMap } from 'fyo/model/types';
 import { validateEmail } from 'fyo/model/validationFunction';
 import { DateTime } from 'luxon';
 import { getCountryInfo, getFiscalYear } from 'utils/misc';
+// EE: bank suggestions in setup come from the verified Estonian COA
+import eeCOA from '../../../fixtures/verified/ee.json';
 
 function getCurrencyList(): { countryCode: string; name: string }[] {
   const result: { countryCode: string; name: string }[] = [];
@@ -19,6 +21,8 @@ function getCurrencyList(): { countryCode: string; name: string }[] {
   return result;
 }
 
+// CUSTOM: resolution registry — demo company and tests need 'in';
+// prune only WIZARD_COA_CODES
 export function getCOAList() {
   return [
     { name: t`Standard Chart of Accounts`, countryCode: '' },
@@ -39,22 +43,38 @@ export function getCOAList() {
     { countryCode: 'nl', name: 'Netherlands - Grootboekschema' },
     { countryCode: 'sg', name: 'Singapore - Chart of Accounts' },
     { countryCode: 'fr', name: 'France - Plan Comptable General' },
-    /*  
-    { countryCode: 'th', name: 'Thailand - Chart of Accounts' },
-    { countryCode: 'us', name: 'United States - Chart of Accounts' },
-    { countryCode: 've', name: 'Venezuela - Plan de Cuentas' },
-    { countryCode: 'za', name: 'South Africa - Chart of Accounts' },
-    { countryCode: 'de', name: 'Germany - Kontenplan' },
-    { countryCode: 'it', name: 'Italy - Piano dei Conti' },
-    { countryCode: 'es', name: 'Spain - Plan de Cuentas' },
-    { countryCode: 'pt', name: 'Portugal - Plan de Contas' },
-    { countryCode: 'pl', name: 'Poland - Rejestr Kont' },
-    { countryCode: 'ro', name: 'Romania - Contabilitate' },
-    { countryCode: 'ru', name: 'Russia - Chart of Accounts' },
-    { countryCode: 'se', name: 'Sweden - Kontoplan' },
-    { countryCode: 'ch', name: 'Switzerland - Kontenplan' },
-    { countryCode: 'tr', name: 'Turkey - Chart of Accounts' },*/
   ];
+}
+
+// CUSTOM: wizard dropdown subset
+const WIZARD_COA_CODES = ['', 'ee'];
+
+export function getCOAWizardList() {
+  return getCOAList().filter(({ countryCode }) =>
+    WIZARD_COA_CODES.includes(countryCode)
+  );
+}
+
+// EE: Bank-type leaves of the verified COA ("1010 - LHV", …)
+function getEstonianBankAccounts(): string[] {
+  const names: string[] = [];
+  const walk = (node: Record<string, unknown>) => {
+    for (const [key, value] of Object.entries(node)) {
+      if (typeof value !== 'object' || value === null || Array.isArray(value)) {
+        continue;
+      }
+
+      const account = value as Record<string, unknown>;
+      if (account['accountType'] === 'Bank' && !account['isGroup']) {
+        names.push(key);
+      }
+
+      walk(account);
+    }
+  };
+
+  walk(eeCOA.tree as Record<string, unknown>);
+  return names;
 }
 
 export class SetupWizard extends Doc {
@@ -163,6 +183,10 @@ export class SetupWizard extends Doc {
   static lists: ListsMap = {
     country: () => Object.keys(getCountryInfo()),
     currency: () => getCurrencyList().map(({ name }) => name),
-    chartOfAccounts: () => getCOAList().map(({ name }) => name),
+    // CUSTOM: dropdown shows the pruned wizard list
+    chartOfAccounts: () => getCOAWizardList().map(({ name }) => name),
+    // EE: suggest the default bank accounts; free text still allowed
+    bankName: (doc) =>
+      doc?.get('country') === 'Estonia' ? getEstonianBankAccounts() : [],
   };
 }

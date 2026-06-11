@@ -36,7 +36,7 @@ async function execute(dm: DatabaseManager) {
       .whereRaw("(archivalId IS NULL OR archivalId = '')")
       .update({ archivalId: knex.ref('lhvArchivalId') });
 
-    // Legacy imports were LHV-only; stamp the source bank so pair-dedup works.
+    // EE: legacy imports were LHV-only — stamp source bank so pair-dedup works
     if (hasImportBank) {
       await knex('JournalEntry')
         .whereNotNull('lhvArchivalId')

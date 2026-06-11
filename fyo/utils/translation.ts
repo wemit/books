@@ -97,6 +97,13 @@ export function setLanguageMapOnTranslationString(
   TranslationString.prototype.languageMap = languageMap;
 }
 
+// CUSTOM: lookup for DB-stored display names (e.g. account names)
+export function translateDynamic(source: string): string {
+  return (
+    TranslationString.prototype.languageMap?.[source]?.translation ?? source
+  );
+}
+
 export function translateSchema(
   map: UnknownMap | UnknownMap[],
   languageMap: LanguageMap,

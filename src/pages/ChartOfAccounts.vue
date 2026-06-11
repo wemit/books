@@ -47,7 +47,7 @@
               class="ms-4"
               :class="[!account.parentAccount && 'font-semibold']"
             >
-              {{ account.name }}
+              {{ tn(account.name) }}
             </div>
 
             <!-- Add Account Buttons on Group Hover -->
@@ -179,6 +179,7 @@
 </template>
 <script lang="ts">
 import { t } from 'fyo';
+import { translateDynamic } from 'fyo/utils/translation';
 import { isCredit } from 'models/helpers';
 import { ModelNameEnum } from 'models/types';
 import PageHeader from 'src/components/PageHeader.vue';
@@ -291,6 +292,15 @@ export default defineComponent({
     docsPathRef.value = '';
   },
   methods: {
+    // CUSTOM: account names are DB data — translate the description part
+    tn(name: string): string {
+      const match = name.match(/^(\d+\s*-\s*)(.*)$/);
+      if (!match) {
+        return translateDynamic(name);
+      }
+
+      return match[1] + translateDynamic(match[2]);
+    },
     async expand() {
       await this.toggleAll(this.accounts, true);
       this.isAllCollapsed = false;

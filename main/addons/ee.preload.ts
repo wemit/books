@@ -1,14 +1,7 @@
-/**
- * CUSTOM — github.com/wemit/books
- *
- * Estonia addon — preload (renderer-side) IPC surface. Exposed on the global
- * `ipc.ee` namespace via main/addons/preload.ts. Only depends on ipcRenderer,
- * so it never pulls main-process (node) code into the preload bundle.
- */
+// CUSTOM: EE addon preload IPC surface, exposed as ipc.ee
 import { ipcRenderer } from 'electron';
 import type { BackendResponse } from 'utils/ipc/types';
-// Type-only import: erased at compile, never pulls node-bound arelleValidator
-// code into the preload bundle. Keeps the IPC contract single-sourced.
+// CUSTOM: type-only — keeps node-bound arelleValidator out of the preload bundle
 import type { ValidateOptions } from '../arelleValidator';
 import { EE_CHANNELS } from './ee.channels';
 

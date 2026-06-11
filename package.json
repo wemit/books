@@ -1,5 +1,5 @@
 {
-  "name": "arveli",
+  "name": "bilantt",
   "version": "0.1.0",
   "description": "Offline desktop accounting with Estonian compliance",
   "author": {
@@ -91,9 +91,9 @@
     "singleQuote": true,
     "trailingComma": "es5"
   },
-  "homepage": "https://github.com/wemit/books",
+  "homepage": "https://github.com/wemit/bilantt",
   "repository": {
-    "url": "https://github.com/wemit/books"
+    "url": "https://github.com/wemit/bilantt"
   },
   "license": "AGPL-3.0-only"
 }

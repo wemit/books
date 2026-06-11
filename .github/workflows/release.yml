@@ -65,14 +65,14 @@ jobs:
           GH_TOKEN: ${{ secrets.HOMEBREW_TAP_TOKEN }}
         run: |
           VERSION="${GITHUB_REF_NAME#v}"
-          DMG=$(ls dist/arveli-v*-mac-arm64.dmg 2>/dev/null | head -1)
+          DMG=$(ls dist/Bilantt-v*-mac-arm64.dmg 2>/dev/null | head -1)
           if [ -z "$DMG" ]; then
             echo "No macOS DMG found — skipping Homebrew update"
             exit 0
           fi
           SHA256=$(sha256sum "$DMG" | cut -d' ' -f1)
 
-          git clone https://x-access-token:${GH_TOKEN}@github.com/wemit/homebrew-arveli.git tap
+          git clone https://x-access-token:${GH_TOKEN}@github.com/wemit/homebrew-bilantt.git tap
           cd tap
           git config user.email "actions@github.com"
           git config user.name "github-actions"
@@ -80,28 +80,28 @@ jobs:
 
           mkdir -p Casks
           {
-            printf 'cask "arveli" do\n'
+            printf 'cask "bilantt" do\n'
             printf '  version "%s"\n' "$VERSION"
             printf '  sha256 "%s"\n' "$SHA256"
             printf '\n'
-            printf '  url "https://github.com/wemit/arveli/releases/download/v#{version}/arveli-v#{version}-mac-arm64.dmg"\n'
-            printf '  name "arveli"\n'
+            printf '  url "https://github.com/wemit/bilantt/releases/download/v#{version}/Bilantt-v#{version}-mac-arm64.dmg"\n'
+            printf '  name "Bilantt"\n'
             printf '  desc "Offline desktop accounting with Estonian compliance"\n'
-            printf '  homepage "https://github.com/wemit/arveli"\n'
+            printf '  homepage "https://github.com/wemit/bilantt"\n'
             printf '\n'
-            printf '  app "arveli.app"\n'
+            printf '  app "Bilantt.app"\n'
             printf 'end\n'
-          } > Casks/arveli.rb
+          } > Casks/bilantt.rb
 
-          git add Casks/arveli.rb
-          git commit -m "books v${VERSION}"
+          git add Casks/bilantt.rb
+          git commit -m "bilantt v${VERSION}"
           git push --force origin "release-${VERSION}"
 
           curl -s -X POST \
             -H "Authorization: Bearer ${GH_TOKEN}" \
             -H "Accept: application/vnd.github+json" \
-            https://api.github.com/repos/wemit/homebrew-arveli/pulls \
-            -d "{\"title\":\"books v${VERSION}\",\"head\":\"release-${VERSION}\",\"base\":\"main\",\"body\":\"Automated cask update for v${VERSION}.\"}"
+            https://api.github.com/repos/wemit/homebrew-bilantt/pulls \
+            -d "{\"title\":\"bilantt v${VERSION}\",\"head\":\"release-${VERSION}\",\"base\":\"main\",\"body\":\"Automated cask update for v${VERSION}.\"}"
 
   scoop:
     needs: build
@@ -118,14 +118,14 @@ jobs:
           GH_TOKEN: ${{ secrets.SCOOP_BUCKET_TOKEN }}
         run: |
           VERSION="${GITHUB_REF_NAME#v}"
-          EXE=$(ls dist/arveli-v*-windows-portable-x64.exe 2>/dev/null | head -1)
+          EXE=$(ls dist/Bilantt-v*-windows-portable-x64.exe 2>/dev/null | head -1)
           if [ -z "$EXE" ]; then
             echo "No Windows portable exe found — skipping Scoop update"
             exit 0
           fi
           SHA256=$(sha256sum "$EXE" | cut -d' ' -f1)
 
-          git clone https://x-access-token:${GH_TOKEN}@github.com/wemit/scoop-arveli.git bucket
+          git clone https://x-access-token:${GH_TOKEN}@github.com/wemit/scoop-bilantt.git bucket
           cd bucket
           git config user.email "actions@github.com"
           git config user.name "github-actions"
@@ -138,18 +138,18 @@ jobs:
             '{
               version: $v,
               description: "Offline desktop accounting with Estonian compliance",
-              homepage: "https://github.com/wemit/arveli",
+              homepage: "https://github.com/wemit/bilantt",
               license: "AGPL-3.0",
-              url: ("https://github.com/wemit/arveli/releases/download/v" + $v + "/arveli-v" + $v + "-windows-portable-x64.exe"),
+              url: ("https://github.com/wemit/bilantt/releases/download/v" + $v + "/Bilantt-v" + $v + "-windows-portable-x64.exe"),
               hash: $h
-            }' > bucket/arveli.json
+            }' > bucket/bilantt.json
 
-          git add bucket/arveli.json
-          git commit -m "books v${VERSION}"
+          git add bucket/bilantt.json
+          git commit -m "bilantt v${VERSION}"
           git push --force origin "release-${VERSION}"
 
           curl -s -X POST \
             -H "Authorization: Bearer ${GH_TOKEN}" \
             -H "Accept: application/vnd.github+json" \
-            https://api.github.com/repos/wemit/scoop-arveli/pulls \
-            -d "{\"title\":\"books v${VERSION}\",\"head\":\"release-${VERSION}\",\"base\":\"main\",\"body\":\"Automated manifest update for v${VERSION}.\"}"
+            https://api.github.com/repos/wemit/scoop-bilantt/pulls \
+            -d "{\"title\":\"bilantt v${VERSION}\",\"head\":\"release-${VERSION}\",\"base\":\"main\",\"body\":\"Automated manifest update for v${VERSION}.\"}"

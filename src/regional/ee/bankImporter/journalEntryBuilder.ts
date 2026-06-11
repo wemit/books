@@ -40,8 +40,7 @@ export async function buildJournalEntries(
     try {
       const existing = (await fyo.db.getAll(ModelNameEnum.JournalEntry, {
         fields: ['name'],
-        // Dedupe on (bank, archivalId): archival IDs are only unique within a
-        // single bank's namespace, so the pair avoids cross-bank collisions.
+        // EE: archival IDs unique only per bank — dedupe on the pair
         filters: {
           importBank,
           archivalId: row.archivalId,

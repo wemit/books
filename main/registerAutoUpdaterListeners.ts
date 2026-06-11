@@ -2,6 +2,7 @@ import { app, dialog } from 'electron';
 import { autoUpdater, UpdateInfo } from 'electron-updater';
 import { emitMainProcessError } from '../backend/helpers';
 import { Main } from '../main';
+import { APP_NAME } from 'utils/consts';
 import { isNetworkError } from './helpers';
 
 export default function registerAutoUpdaterListeners(main: Main) {
@@ -52,7 +53,7 @@ export default function registerAutoUpdaterListeners(main: Main) {
     const option = await dialog.showMessageBox({
       type: 'info',
       title: 'Update Downloaded',
-      message: 'Restart Arveli to install update?',
+      message: `Restart ${APP_NAME} to install update?`,
       buttons: ['Yes', 'No'],
     });
 

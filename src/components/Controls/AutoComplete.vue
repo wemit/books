@@ -327,6 +327,12 @@ export default {
         this.setSuggestion(suggestion);
       } else {
         const suggestions = await this.getSuggestions(label);
+        // CUSTOM: commit free text when nothing matches — suggestions are hints
+        if (suggestions.length === 0) {
+          this.triggerChange(label);
+          return;
+        }
+
         this.setSuggestion(suggestions[0]);
       }
     },

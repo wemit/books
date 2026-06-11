@@ -85,6 +85,7 @@ import { Doc } from 'fyo/model/doc';
 import { ValidationError } from 'fyo/utils/errors';
 import { ModelNameEnum } from 'models/types';
 import { Field, Schema } from 'schemas/types';
+import { APP_NAME } from 'utils/consts';
 import Button from 'src/components/Button.vue';
 import FormContainer from 'src/components/FormContainer.vue';
 import FormHeader from 'src/components/FormHeader.vue';
@@ -255,7 +256,7 @@ export default defineComponent({
 
       this.update();
       await showDialog({
-        title: this.t`Reload Arveli?`,
+        title: this.t`Reload ${APP_NAME}?`,
         detail: this.t`Changes made to settings will be visible on reload.`,
         type: 'info',
         buttons: [

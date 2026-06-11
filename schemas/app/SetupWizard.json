@@ -52,8 +52,8 @@
     {
       "fieldname": "bankName",
       "label": "Bank Name",
-      "fieldtype": "Data",
-      "placeholder": "Prime Bank",
+      "fieldtype": "AutoComplete",
+      "placeholder": "Bank Account",
       "section": "Accounting",
       "required": true
     },
