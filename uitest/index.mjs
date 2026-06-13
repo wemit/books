@@ -13,7 +13,7 @@ const appSourcePath = path.join(root, 'dist_electron', 'build', 'main.js');
   window.setDefaultTimeout(60_000);
 
   test('load app', async (t) => {
-    t.equal(await window.title(), 'Books', 'title matches');
+    t.equal(await window.title(), 'Bilantt', 'title matches');
 
     await new Promise((r) => window.once('load', () => r()));
     t.ok(true, 'window has loaded');
@@ -58,8 +58,8 @@ const appSourcePath = path.join(root, 'dist_electron', 'build', 'main.js');
     await window.getByPlaceholder('john@doe.com').fill('test@example.com');
     await window.getByPlaceholder('Select Country').fill('India');
     await window.getByPlaceholder('Select Country').blur();
-    await window.getByPlaceholder('Prime Bank').fill('Test Bank');
-    await window.getByPlaceholder('Prime Bank').blur();
+    await window.getByPlaceholder('Bank Account').fill('Test Bank');
+    await window.getByPlaceholder('Bank Account').blur();
 
     t.equal(
       await window.getByTestId('submit-button').isDisabled(),
